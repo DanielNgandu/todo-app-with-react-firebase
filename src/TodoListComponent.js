@@ -8,15 +8,16 @@ import KeyboardArrowRightRoundedIcon from '@material-ui/icons/KeyboardArrowRight
 
 
 function TodoListComponent(props) {
-  return (
-    <div>
-      <ListItem>        <ListItemIcon>
-          <KeyboardArrowRightRoundedIcon />
-      </ListItemIcon>
-          <ListItemText primary={props.todoItem} />
-          </ListItem>
-    </div>
-  );
+    return (
+        <div>
+            <ListItem>
+                <ListItemIcon>
+                    <KeyboardArrowRightRoundedIcon/>
+                </ListItemIcon>
+                <ListItemText primary={props.todoItem} secondary='Todo Details here...'/>
+            </ListItem>
+        </div>
+    );
 }
 
 export default TodoListComponent;
