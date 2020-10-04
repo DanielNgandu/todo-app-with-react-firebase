@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import {classes} from "istanbul-lib-coverage";
 import Divider from "@material-ui/core/Divider";
 import db from "./firebase";
+import * as firebase from "firebase";
 
 function App() {
   //declare constants
@@ -22,8 +23,8 @@ function App() {
     //useEffect runs when app loads, has functions and dependencies
     //useEffect is short for 'use side effect'. Effects are when our application reacts with the outside world, like working with an API.
     useEffect(()=>{
-        db.collection('todos').onSnapshot(snapshot => {
-            setTodos(snapshot.docs.map(doc => doc.data().task))
+        db.collection('todos').orderBy('timestamp','desc').onSnapshot(snapshot => {
+            setTodos(snapshot.docs.map(doc => ({id:doc.id,task:doc.data().task})))
             // console.log(snapshot.docs.map(doc => doc.data().task))
         })
     },[]);
@@ -34,7 +35,8 @@ function App() {
     event.preventDefault();
 
     db.collection('todos').add({
-        task:input
+        task:input,
+        timestamp:firebase.firestore.FieldValue.serverTimestamp()
     })
     // setTodos([...todos, input]); //add new input value to array
     setInput(""); //reset form to empty
@@ -56,7 +58,7 @@ function App() {
         </AppBar>
         <Divider light />
       <FormControl>
-        <InputLabel>Add A To-Do</InputLabel>
+        <InputLabel>📌Add A To-Do</InputLabel>
         <Input
           value={input}
           onChange={(event) => setInput(event.target.value)}
@@ -73,8 +75,8 @@ function App() {
       </Button>
 
       <List>
-        {todos.map((todo) => (
-          <TodoListComponent todoItem={todo} />
+        {todos.map((taskObj) => (
+          <TodoListComponent taskObj={taskObj} />
         ))}
       </List>
     </div>

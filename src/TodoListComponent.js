@@ -5,6 +5,8 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import KeyboardArrowRightRoundedIcon from '@material-ui/icons/KeyboardArrowRightRounded';
+import Button from "@material-ui/core/Button";
+import db from "./firebase";
 
 
 function TodoListComponent(props) {
@@ -14,7 +16,14 @@ function TodoListComponent(props) {
                 <ListItemIcon>
                     <KeyboardArrowRightRoundedIcon/>
                 </ListItemIcon>
-                <ListItemText primary={props.todoItem} secondary='Todo Details here...'/>
+                <ListItemText primary={props.taskObj.task} secondary='📑Todo Details here...'/>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={event => db.collection('todos').doc(props.taskObj.id).delete()}
+                >
+                    🗑Delete
+                </Button>
             </ListItem>
         </div>
     );
